@@ -1,0 +1,79 @@
+run:
+  concurrency: 4
+  deadline: 5m
+  issues-exit-code: 1
+
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+
+linters-settings:
+  goimports:
+    local-prefixes: github.com/TheRTK/http-multiplexer
+  gocyclo:
+    min-complexity: 30
+  maligned:
+    suggest-new: true
+  gocognit:
+    min-complexity: 40
+
+linters:
+  enable:
+    - govet
+    - errcheck
+    - structcheck
+    - varcheck
+    - ineffassign
+    - deadcode
+    - typecheck
+    - megacheck
+    - bodyclose
+    - golint
+    - rowserrcheck
+    - stylecheck
+    - gosec
+    - unconvert
+    - goconst
+    - gocyclo
+    - gocognit
+    - asciicheck
+    - gofmt
+    - goimports
+    - maligned
+    - misspell
+    - unparam
+    - dogsled
+    - nakedret
+    - prealloc
+    - gocritic
+    - gochecknoinits
+    - gochecknoglobals
+    - whitespace
+    - wsl
+    - goprintffuncname
+    - goerr113
+    - godot
+    - testpackage
+    - nolintlint
+  fast: false
+  disable-all: true
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - gocyclo
+        - errcheck
+        - dupl
+        - gosec
+        - gochecknoglobals
+        - wsl
+        - funlen
+        - goerr113
+    - text: "Errors unhandled"
+      linters:
+        - gosec
+    - linters:
+        - lll
+      source: "^//go:generate "
