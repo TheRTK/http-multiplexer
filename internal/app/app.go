@@ -6,7 +6,7 @@ import (
 )
 
 type App struct {
-	cfg *config.Config
+	cfg            *config.Config
 	requestService request.IRequestService
 }
 
@@ -20,7 +20,6 @@ func New(opts ...Option) *App {
 	return app
 }
 
-func (a *App) GetRequestService() request.IRequestService  {
+func (a *App) GetRequestService() request.IRequestService {
 	return a.requestService
 }
-

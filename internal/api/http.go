@@ -12,9 +12,15 @@ import (
 	"github.com/TheRTK/http-multiplexer/internal/services/request"
 )
 
-type Server struct {
-	httpServer *http.Server
+type RequestHandler interface {
+	http.Handler
 
+	Shutdown()
+}
+
+type Server struct {
+	httpServer     *http.Server
+	httpHandler    RequestHandler
 	requestService request.IRequestService
 	cfg            *config.Config
 }
@@ -51,14 +57,15 @@ func (s *Server) GetConfig() *config.Config {
 	return s.cfg
 }
 
-
 func (s *Server) Run() error {
+	s.httpHandler = NewHandler(s.GetAppOptions, s.cfg.RequestLimitCount)
+
 	s.httpServer = &http.Server{
 		Addr:           ":" + s.cfg.PortHTTP,
 		ReadTimeout:    time.Second * 15,
 		WriteTimeout:   time.Second * 15,
 		MaxHeaderBytes: 1 << 20, // 1MB
-		Handler:        NewHandler(s.GetAppOptions, s.cfg.RequestLimitCount),
+		Handler:        s.httpHandler,
 	}
 
 	fmt.Printf("Starting server at port %s\n", s.cfg.PortHTTP)
@@ -67,6 +74,8 @@ func (s *Server) Run() error {
 }
 
 func (s *Server) Shutdown(ctx context.Context) error {
+	defer s.httpHandler.Shutdown()
+
 	return s.httpServer.Shutdown(ctx)
 }
 

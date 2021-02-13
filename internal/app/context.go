@@ -7,8 +7,8 @@ import (
 )
 
 type Context struct {
-	App    IAppFace
-	Ctx    context.Context
+	App IAppFace
+	Ctx context.Context
 }
 
 type IAppFace interface {
@@ -21,4 +21,3 @@ func NewContext(ctx context.Context, app IAppFace) *Context {
 		Ctx: ctx,
 	}
 }
-
