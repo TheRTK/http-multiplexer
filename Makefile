@@ -5,4 +5,3 @@ lint:
 .PHONY: build
 build:
 	go build -installsuffix 'static' -ldflags "-s -w" -o multiplexer cmd/multiplexer/*
-

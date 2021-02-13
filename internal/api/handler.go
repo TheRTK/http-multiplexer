@@ -13,12 +13,10 @@ type Handler struct {
 }
 
 func NewHandler(getAppOptions app.OptionCreator, requestsLimit int) *Handler {
-	h := &Handler{
+	return &Handler{
 		getAppOptions: getAppOptions,
 		sem:           make(chan struct{}, requestsLimit),
 	}
-
-	return h
 }
 
 func (h Handler) Shutdown() {
